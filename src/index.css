@@ -1,0 +1,49 @@
+:root {
+  --font-heading: 'Orbitron', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  --color-bg: #050510;
+  --color-accent-primary: #00f3ff; /* Cyan */
+  --color-accent-secondary: #bc13fe; /* Magenta */
+  --color-text-main: #ffffff;
+  --color-text-muted: #8b9bb4;
+
+  --z-index-background: 0;
+  --z-index-mid: 10;
+  --z-index-foreground: 20;
+  --z-index-ui: 100;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+  overflow: hidden; /* Prevent scrolling for the app feel */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+button {
+  font-family: var(--font-heading);
+  cursor: pointer;
+  border: none;
+  outline: none;
+}

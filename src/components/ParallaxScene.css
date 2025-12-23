@@ -1,0 +1,206 @@
+.parallax-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: var(--color-bg);
+}
+
+.parallax-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* Background Layer */
+.bg-gradient {
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(ellipse at center, #1a1a2e 0%, #000000 100%);
+    z-index: var(--z-index-background);
+}
+
+.bg-grid {
+    position: absolute;
+    inset: 0;
+    opacity: 0.2;
+    background-image:
+        linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+}
+
+.orb-purple {
+    position: absolute;
+    top: 20%;
+    left: 20%;
+    width: 300px;
+    height: 300px;
+    background-color: rgba(100, 20, 150, 0.5);
+    border-radius: 50%;
+    filter: blur(100px);
+    mix-blend-mode: screen;
+}
+
+.orb-blue {
+    position: absolute;
+    top: 60%;
+    left: 60%;
+    width: 400px;
+    height: 400px;
+    background-color: rgba(0, 50, 150, 0.4);
+    border-radius: 50%;
+    filter: blur(120px);
+    mix-blend-mode: screen;
+}
+
+/* Midground Layer */
+.mid-layer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--z-index-mid);
+}
+
+.center-ring {
+    width: 500px;
+    height: 500px;
+    border: 1px solid rgba(0, 243, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: spin 20s linear infinite;
+}
+
+.center-ring-inner {
+    width: 480px;
+    height: 480px;
+    border: 1px dashed rgba(188, 19, 254, 0.3);
+    border-radius: 50%;
+}
+
+.floating-triangle {
+    position: absolute;
+    top: 20%;
+    left: 15%;
+    width: 0;
+    height: 0;
+    border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+    border-bottom: 80px solid rgba(0, 243, 255, 0.1);
+    filter: blur(2px);
+    transform: rotate(12deg);
+}
+
+.floating-square {
+    position: absolute;
+    bottom: 30%;
+    right: 10%;
+    width: 100px;
+    height: 100px;
+    border: 2px solid rgba(188, 19, 254, 0.2);
+    transform: rotate(45deg);
+}
+
+/* Foreground Layer */
+.fore-layer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--z-index-foreground);
+}
+
+.title-text {
+    font-size: 6rem;
+    font-weight: 700;
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    background-image: linear-gradient(to right, var(--color-accent-primary), var(--color-accent-secondary));
+    filter: drop-shadow(0 0 15px rgba(0, 243, 255, 0.5));
+    margin: 0;
+}
+
+.subtitle-text {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    letter-spacing: 0.5em;
+    color: var(--color-text-muted);
+    font-family: var(--font-heading);
+}
+
+/* UI Layer */
+.ui-layer {
+    z-index: var(--z-index-ui);
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.ui-corner {
+    width: 4rem;
+    height: 4rem;
+    border-color: var(--color-accent-primary);
+    opacity: 0.7;
+}
+
+.ui-tl {
+    border-top: 2px solid;
+    border-left: 2px solid;
+}
+
+.ui-tr {
+    border-top: 2px solid;
+    border-right: 2px solid;
+}
+
+.ui-bl {
+    border-bottom: 2px solid;
+    border-left: 2px solid;
+}
+
+.ui-br {
+    border-bottom: 2px solid;
+    border-right: 2px solid;
+}
+
+.ui-center-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.ui-bottom-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 0.25rem 1rem;
+    border: 1px solid var(--color-accent-secondary);
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    color: var(--color-accent-secondary);
+    background-color: rgba(188, 19, 254, 0.1);
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
