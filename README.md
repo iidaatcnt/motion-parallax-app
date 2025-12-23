@@ -1,73 +1,45 @@
-# React + TypeScript + Vite
+# CYBER MIRROR - Motion Parallax App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Webカメラを使用してユーザーの「顔の動き」をトラッキングし、深度のある3D空間体験と、鏡のように反応するデジタルアバターを提供するインタラクティブ・アプリケーションです。
 
-Currently, two official plugins are available:
+## 🌐 Demo
+[https://motion-parallax-app.vercel.app/](https://motion-parallax-app.vercel.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Key Features (主な機能)
 
-## React Compiler
+### 1. Motion Parallax Control
+顔の位置（上下左右）をリアルタイムに検知し、画面内の複数のレイヤー（背景、中間、前景、UI）を異なる速度で移動させます。これにより、まるで「窓やコックピットを通して奥行きのある世界を覗き込んでいる」ような錯覚を生み出します。
+- **感度増幅**: わずかな頭の動きでダイナミックな視点移動を実現。
+- **3D Tilt**: 画面全体が傾くようなパースペクティブ効果を追加。
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 2. Cyber Mirror Avatar (サイバーミラー)
+画面中央に表示される点群（Point Cloud）のアバターは、ユーザー自身の顔の動きと完全に同期します。
+- **瞬き・口の動き・首の傾げ** をリアルタイムに反映。
+- **"自己認識"**: 「これは自分の動きだ」と直感的に理解できるデジタルインターフェース。
 
-## Expanding the ESLint configuration
+### 3. Smile Interaction (笑顔検知)
+> 「鏡は先に笑わない（鏡の中の誰かに笑って欲しければ、まず自分が笑いかけよ）」
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+この哲学を体現するため、ユーザーの表情を分析し、**微笑み（Smile）** を検知するとアバターの色が変化します。
+- **通常時**: Cool Cyan (青緑色)
+- **笑顔時**: Warm Gold (暖色)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 4. Calibration System (位置リセット)
+ノートPCを低いテーブルに置いたり、寝そべった姿勢で使用したりする場合でも、ワンボタンで「現在の顔の位置」を「真正面（ゼロ地点）」として再設定できます。
+- **操作**: `SPACE` キー または 画面下の `RESET CENTER` ボタン。
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🛠 Tech Stack
+- **Framework**: React (TypeScript) + Vite
+- **Face Tracking**: Google MediaPipe Face Mesh
+- **Styling**: Vanilla CSS Points / Tailwind Utilities
+- **Deployment**: Vercel
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 📖 How to Use
+1.  アプリを開き、**カメラの使用を許可** してください。
+2.  数秒待つと、左上のSTATUSが `FACE DETECTED` になり、画面中央にアバターが表示されます。
+3.  体を左右に動かしたり、覗き込むように動いて、背景のパララックス効果を楽しんでください。
+4.  **キャリブレーション**: 視点がずれていると感じたら、楽な姿勢で **[SPACE]** キーを押してください。
+5.  **スマイル**: 画面のアバターに向かって微笑んでください。色が暖かく変化します。
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
+Created by Antigravity
