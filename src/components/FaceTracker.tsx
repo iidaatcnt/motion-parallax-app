@@ -71,16 +71,22 @@ const FaceTracker: React.FC<FaceTrackerProps> = ({ onFaceDetected, onFaceLost })
     };
 
     return (
-        // Hide the actual camera feed, we only need the data
-        <div className="fixed top-4 left-4 w-32 opacity-0 pointer-events-none">
+        // Show camera feed for debugging
+        <div className="fixed bottom-4 right-4 w-48 h-36 border border-cyan-500 rounded overflow-hidden z-[9999] opacity-80">
             <Webcam
                 ref={webcamRef}
                 audio={false}
-                width={320}
-                height={240}
+                width="100%"
+                height="100%"
                 videoConstraints={{ facingMode: "user" }}
                 onUserMedia={onCamLoad}
+                style={{ transform: 'scaleX(-1)', objectFit: 'cover' }}
             />
+            {!isInitialized && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/80 text-cyan-500 text-xs">
+                    Connecting Cam...
+                </div>
+            )}
         </div>
     );
 };
