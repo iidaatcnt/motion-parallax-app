@@ -50,26 +50,29 @@ const HoloAvatar: React.FC<HoloAvatarProps> = ({ landmarks }) => {
         const w = canvas.width;
         const h = canvas.height;
 
+        // Draw all points
         for (let i = 0; i < landmarks.length; i++) {
-            if (i % 2 !== 0) continue;
-
             const pt = landmarks[i];
+
+            // Mirror x
             const x = (1 - pt.x) * w;
             const y = pt.y * h;
 
             ctx.fillStyle = currentColor;
-            ctx.fillRect(x, y, 2, 2);
+            // Make points bigger (4px) and rectangular for digital look
+            ctx.fillRect(x, y, 4, 4);
         }
 
     }, [landmarks]);
 
     return (
-        <div className="absolute inset-0 flex items-center justify-center z-[50] pointer-events-none mix-blend-screen">
+        <div className="absolute inset-0 flex items-center justify-center z-[500] pointer-events-none">
             <canvas
                 ref={canvasRef}
                 width={640} // Internal resolution
                 height={480}
-                className="w-full h-full object-contain opacity-80"
+                className="w-full h-full object-contain opacity-100" // Fully opaque
+                style={{ filter: 'drop-shadow(0 0 4px rgba(0, 243, 255, 0.5))' }}
             />
         </div>
     );
