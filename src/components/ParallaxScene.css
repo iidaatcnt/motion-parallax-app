@@ -1,8 +1,18 @@
+/* Basic reset and variables already in index.css, only component specifics here */
+
+.perspective-viewport {
+    perspective: 1000px;
+}
+
+.preserve-3d {
+    transform-style: preserve-3d;
+}
+
 .parallax-container {
+    /* Ensure container takes full space */
+    width: 100vw;
+    height: 100vh;
     position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
     background-color: var(--color-bg);
 }
 
@@ -13,15 +23,14 @@
     width: 100%;
     height: 100%;
     pointer-events: none;
+    /* Important for 3D translations */
+    transform-style: preserve-3d;
 }
 
 /* Background Layer */
 .bg-gradient {
-    position: absolute;
-    top: -10%;
-    left: -10%;
-    width: 120%;
-    height: 120%;
+    /* Using Tailwind utility equivalents in inline styles or other blocks for now, 
+     keeping custom specifics here if needed */
     background: radial-gradient(ellipse at center, #1a1a2e 0%, #000000 100%);
     z-index: var(--z-index-background);
 }
