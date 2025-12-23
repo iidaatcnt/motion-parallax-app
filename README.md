@@ -1,45 +1,56 @@
-# CYBER MIRROR - Motion Parallax App
+# CYBER MIRROR (Motion Parallax App)
 
-Webカメラを使用してユーザーの「顔の動き」をトラッキングし、深度のある3D空間体験と、鏡のように反応するデジタルアバターを提供するインタラクティブ・アプリケーションです。
+ユーザーの顔の動きをトラッキングし、奥行きのある3D空間と、鏡のように反応するデジタルアバターを描画するインタラクティブ・Webアプリケーションです。
+
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Status](https://img.shields.io/badge/status-live-success.svg)
 
 ## 🌐 Demo
-[https://motion-parallax-app.vercel.app/](https://motion-parallax-app.vercel.app/)
+**[Launch App (Vercel)](https://motion-parallax-app.vercel.app/)**
 
-## 🚀 Key Features (主な機能)
+## ✨ Features (機能)
 
-### 1. Motion Parallax Control
-顔の位置（上下左右）をリアルタイムに検知し、画面内の複数のレイヤー（背景、中間、前景、UI）を異なる速度で移動させます。これにより、まるで「窓やコックピットを通して奥行きのある世界を覗き込んでいる」ような錯覚を生み出します。
-- **感度増幅**: わずかな頭の動きでダイナミックな視点移動を実現。
-- **3D Tilt**: 画面全体が傾くようなパースペクティブ効果を追加。
+### 1. Motion Parallax (視差効果)
+顔を動かすことで、画面の奥にある世界を覗き込むような体験ができます。
+- 背景、中間、前景のレイヤーが異なる速度で動き、強力な深度（奥行き）を感じさせます。
 
-### 2. Cyber Mirror Avatar (サイバーミラー)
-画面中央に表示される点群（Point Cloud）のアバターは、ユーザー自身の顔の動きと完全に同期します。
-- **瞬き・口の動き・首の傾げ** をリアルタイムに反映。
-- **"自己認識"**: 「これは自分の動きだ」と直感的に理解できるデジタルインターフェース。
+### 2. Cyber Mirror Avatar
+あなたの顔がデジタルな点群（ポイントクラウド）として画面中央に映し出されます。
+- 瞬き、口の動き、首の傾げなどをリアルタイムに反映します。
 
-### 3. Smile Interaction (笑顔検知)
-> 「鏡は先に笑わない（鏡の中の誰かに笑って欲しければ、まず自分が笑いかけよ）」
+### 3. Emotion Feedback
+**「鏡は先に笑わない」**
+あなたがアバターに向かって微笑む（口角を上げる）と、アバターの色が冷たい青色から暖かい金色に変化します。
 
-この哲学を体現するため、ユーザーの表情を分析し、**微笑み（Smile）** を検知するとアバターの色が変化します。
-- **通常時**: Cool Cyan (青緑色)
-- **笑顔時**: Warm Gold (暖色)
-
-### 4. Calibration System (位置リセット)
-ノートPCを低いテーブルに置いたり、寝そべった姿勢で使用したりする場合でも、ワンボタンで「現在の顔の位置」を「真正面（ゼロ地点）」として再設定できます。
-- **操作**: `SPACE` キー または 画面下の `RESET CENTER` ボタン。
-
-## 🛠 Tech Stack
-- **Framework**: React (TypeScript) + Vite
-- **Face Tracking**: Google MediaPipe Face Mesh
-- **Styling**: Vanilla CSS Points / Tailwind Utilities
-- **Deployment**: Vercel
-
-## 📖 How to Use
-1.  アプリを開き、**カメラの使用を許可** してください。
-2.  数秒待つと、左上のSTATUSが `FACE DETECTED` になり、画面中央にアバターが表示されます。
-3.  体を左右に動かしたり、覗き込むように動いて、背景のパララックス効果を楽しんでください。
-4.  **キャリブレーション**: 視点がずれていると感じたら、楽な姿勢で **[SPACE]** キーを押してください。
-5.  **スマイル**: 画面のアバターに向かって微笑んでください。色が暖かく変化します。
+### 4. Calibration
+どんな姿勢（寝そべり、ローテーブルなど）でも快適に操作できます。
+- **[SPACE] キー** を押すと、現在の顔の位置を「中心」としてリセットします。
 
 ---
-Created by Antigravity
+
+## 🚀 Usage
+
+1.  上記デモリンクを開き、**カメラの使用を許可** してください。
+2.  画面左上のステータスが `FACE DETECTED` になるのを待ちます。
+3.  体を動かしてパララックスを楽しんだり、アバターに笑いかけたりして操作します。
+
+---
+
+## 👨‍💻 Development
+
+技術的な詳細、コンポーネント構成、アーキテクチャについては、同梱の仕様書をご確認ください。
+
+👉 **[See TECHNICAL SPECIFICATIONS (SPEC.md)](./SPEC.md)**
+
+### Installation
+
+```bash
+# Clone repository
+git clone https://github.com/iidaatcnt/motion-parallax-app.git
+
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+```
