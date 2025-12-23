@@ -1,20 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Webcam from 'react-webcam';
-import type { Results } from '@mediapipe/face_mesh';
+import type { Results, NormalizedLandmarkList } from '@mediapipe/face_mesh';
 import { FaceMesh } from '@mediapipe/face_mesh';
 import * as CameraUtils from '@mediapipe/camera_utils';
 
 interface FaceTrackerProps {
-    onFaceMove: (x: number, y: number) => void;
+    onFaceDetected: (landmarks: NormalizedLandmarkList) => void;
+    onFaceLost: () => void;
 }
 
-const FaceTracker: React.FC<FaceTrackerProps> = ({ onFaceMove }) => {
+const FaceTracker: React.FC<FaceTrackerProps> = ({ onFaceDetected, onFaceLost }) => {
     const webcamRef = useRef<Webcam>(null);
     const faceMeshRef = useRef<FaceMesh | null>(null);
     const cameraRef = useRef<CameraUtils.Camera | null>(null);
-
-    const [cameraActive, setCameraActive] = useState(false);
-    const [errorMSG, setErrorMSG] = useState<string>('');
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {
         return () => {
@@ -24,15 +24,21 @@ const FaceTracker: React.FC<FaceTrackerProps> = ({ onFaceMove }) => {
         };
     }, []);
 
+    const onResults = (results: Results) => {
+        if (results.multiFaceLandmarks && results.multiFaceLandmarks.length > 0) {
+            onFaceDetected(results.multiFaceLandmarks[0]);
+        } else {
+            onFaceLost();
+        }
+    };
+
     const onCamLoad = () => {
-        console.log("Camera Loaded");
-        setCameraActive(true);
-
-        if (webcamRef.current && webcamRef.current.video) {
+        if (webcamRef.current && webcamRef.current.video && !cameraRef.current) {
             const videoElement = webcamRef.current.video;
+            setIsInitialized(true);
 
-            // Prevent multiple initializations
-            if (cameraRef.current) return;
+            // Prevent re-initialization
+            if (faceMeshRef.current) return;
 
             const faceMesh = new FaceMesh({
                 locateFile: (file) => {
@@ -64,39 +70,17 @@ const FaceTracker: React.FC<FaceTrackerProps> = ({ onFaceMove }) => {
         }
     };
 
-    const onResults = (results: Results) => {
-        if (results.multiFaceLandmarks && results.multiFaceLandmarks.length > 0) {
-            const landmarks = results.multiFaceLandmarks[0];
-            const nose = landmarks[1];
-
-            // FaceMesh: x increases left to right (0 -> 1)
-            // Mirroring: We want moving head left (viewer's left) to correspond to x < 0.5
-            // If we mirror the video display, we should also think about the interaction.
-            // Usually, if I move 'left', the parallax should reveal the 'right' side of the background content (window effect).
-
-            const x = (nose.x - 0.5) * 2;
-            const y = (nose.y - 0.5) * 2;
-
-            onFaceMove(x, y);
-        }
-    };
-
     return (
-        <div className="absolute bottom-4 right-4 w-32 h-24 border-2 border-[var(--color-accent-primary)] rounded overflow-hidden opacity-50 hover:opacity-100 transition-opacity z-[1000]">
+        // Hide the actual camera feed, we only need the data
+        <div className="fixed top-4 left-4 w-32 opacity-0 pointer-events-none">
             <Webcam
                 ref={webcamRef}
                 audio={false}
-                width="100%"
-                height="100%"
-                videoConstraints={{
-                    facingMode: "user"
-                }}
-                onUserMediaError={(err) => setErrorMSG(err.toString())}
+                width={320}
+                height={240}
+                videoConstraints={{ facingMode: "user" }}
                 onUserMedia={onCamLoad}
-                style={{ transform: 'scaleX(-1)', objectFit: 'cover' }}
             />
-            {errorMSG && <div className="text-red-500 text-xs">{errorMSG}</div>}
-            {!cameraActive && !errorMSG && <div className="text-[var(--color-accent-primary)] text-xs text-center mt-2">Initializing...</div>}
         </div>
     );
 };
