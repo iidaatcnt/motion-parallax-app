@@ -7,6 +7,7 @@ interface HoloAvatarProps {
 
 const HoloAvatar: React.FC<HoloAvatarProps> = ({ landmarks }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const smileIntensity = useRef(0); // 0 to 1
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -18,29 +19,59 @@ const HoloAvatar: React.FC<HoloAvatarProps> = ({ landmarks }) => {
         // Clear canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Drawing Config
-        const pointColor = '#00f3ff'; // Cyan
-        const pointSize = 2;
+        // --- SMILE DETECTION ---
+        // Mouth Corners: 61 (Left), 291 (Right)
+        // Eye Corners: 33 (Left), 263 (Right) - Use for normalization (head size)
+        // Jaw Bottom: 152, Top: 10
+
+        let smileRatio = 0;
+        try {
+            const leftMouth = landmarks[61];
+            const rightMouth = landmarks[291];
+            const leftEye = landmarks[33];
+            const rightEye = landmarks[263];
+
+            if (leftMouth && rightMouth && leftEye && rightEye) {
+                // Distance between mouth corners
+                const mouthWidth = Math.hypot(rightMouth.x - leftMouth.x, rightMouth.y - leftMouth.y);
+                // Distance between outer eye corners (face width reference)
+                const faceWidth = Math.hypot(rightEye.x - leftEye.x, rightEye.y - leftEye.y);
+
+                // Ratio: Usually 0.35-0.4 is neutral, 0.45-0.5+ is smiling
+                const ratio = mouthWidth / faceWidth;
+
+                // Map 0.4 (neutral) -> 0.0, 0.55 (smile) -> 1.0
+                // Clamped
+                smileRatio = Math.max(0, Math.min(1, (ratio - 0.40) * 5)); // * 5 to scale 0.15 diff to ~0.75 range
+            }
+        } catch (e) {
+            // Fallback
+        }
+
+        // Smooth the value
+        smileIntensity.current = smileIntensity.current + (smileRatio - smileIntensity.current) * 0.1;
+
+        // --- COLOR INTERPOLATION ---
+        // Cool Cyan: #00f3ff (0, 243, 255)
+        // Warm Gold: #ffaa00 (255, 170, 0)
+
+        const r = Math.round(0 + (255 - 0) * smileIntensity.current);
+        const g = Math.round(243 + (170 - 243) * smileIntensity.current);
+        const b = Math.round(255 + (0 - 255) * smileIntensity.current);
+
+        const currentColor = `rgb(${r}, ${g}, ${b})`;
+        // Glow also changes
+        const glowr = Math.round(0 + (255 - 0) * smileIntensity.current);
+        const glow = `rgba(${glowr}, ${g}, ${b}, 0.5)`;
+
+        const pointSize = 2; // slightly larger for visibility
 
         const w = canvas.width;
         const h = canvas.height;
 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const drawPoint = (landmark: NormalizedLandmark) => {
-            // Mirror x: 1 - x
-            const x = (1 - landmark.x) * w;
-            const y = landmark.y * h;
-
-            ctx.beginPath();
-            ctx.arc(x, y, pointSize, 0, 2 * Math.PI);
-            ctx.fillStyle = pointColor;
-            ctx.fill();
-        };
-
         // Draw all points
-        // Optimization: Draw smaller dots or skip some if too heavy, but 468 is fine for 2D canvas.
         for (let i = 0; i < landmarks.length; i++) {
-            // Draw every 2nd point for style/perf
+            // Draw more points for better definition
             if (i % 2 !== 0) continue;
 
             const pt = landmarks[i];
@@ -49,10 +80,20 @@ const HoloAvatar: React.FC<HoloAvatarProps> = ({ landmarks }) => {
             const x = (1 - pt.x) * w;
             const y = pt.y * h;
 
-            // Draw Rect instead of Circle for "pixel/digital" feel
-            ctx.fillStyle = pointColor;
+            ctx.fillStyle = currentColor;
+
+            // Add subtle glow to eyes (indices roughly around 33, 133, 362, 263) and mouth
+            // Simple logic: just draw
             ctx.fillRect(x, y, 2, 2);
         }
+
+        // Add "Smile Feedback" - A ring or aura around the face?
+        // Or just make the points bloom when smiling
+        if (smileIntensity.current > 0.5) {
+            // Draw a text or indicator?
+            // Let's keep it subtle but beautiful. The color shift is powerful.
+        }
+
     }, [landmarks]);
 
     return (
